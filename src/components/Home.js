@@ -5,11 +5,19 @@ import {
     Select, InputLabel, TextField
 } from '@mui/material';
 
+import CopyButton from './CopyButton';
 import { QRCode } from 'react-qrcode-logo';
 
 import { tokens, defaultToken } from '../data/tokens'
 import CasperLogo from '../images/casperLogoCircle.png';
 
+function copyTextToClipboard(event, text){
+    if(!text || !event)   
+        return;
+    if(typeof text !== 'string')    return;
+    event.preventDefault();
+    window && window.navigator.clipboard.writeText(text);
+}
 
 const Home = () => {
   
@@ -101,9 +109,6 @@ const Home = () => {
                             value={message}
                             onChange={e => setMessage(e.target.value)}
                         /><br/>
-                        <p>
-                            ---{qrString}---
-                        </p>
                     </Box>
                 </Grid>
                 <Grid item>
@@ -112,8 +117,28 @@ const Home = () => {
                         logoWidth={60}
                         logoImage={CasperLogo}
                         value={qrString} />
+                    <p>
+                        QR code string: { qrString }
+                    </p>
                 </Grid>
             </Grid>
+            
+            <h2>
+                Example addresses:
+            </h2>
+            {
+                tokens.map(token => (
+                    <div className="m-0">
+                        <b>
+                            { token.name }: 
+                        </b>
+                        { token.example }
+                        <CopyButton 
+                            onClick={e => copyTextToClipboard(token.example)}/>
+                    </div>
+                ))
+            }
+
         </Container>
     )
 }
