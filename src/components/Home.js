@@ -11,11 +11,11 @@ import { QRCode } from 'react-qrcode-logo';
 import { tokens, defaultToken } from '../data/tokens'
 import CasperLogo from '../images/casperLogoCircle.png';
 
-function copyTextToClipboard(event, text){
-    if(!text || !event)   
+function copyTextToClipboard(text){
+    if(!text)   
         return;
-    if(typeof text !== 'string')    return;
-    event.preventDefault();
+    if(typeof text !== 'string')    
+    	return;
     window && window.navigator.clipboard.writeText(text);
 }
 
@@ -92,7 +92,7 @@ const Home = () => {
                         </FormControl><br/><br/>
                         <TextField
                             required
-                            fullWidth
+                            style={{width:"370px"}}
                             error={!token.validator.test(address)}
                             label="Recipient address"                                
                             value={address}
@@ -132,6 +132,7 @@ const Home = () => {
                         <b>
                             { token.name }: 
                         </b>
+                        &nbsp;
                         { token.example }
                         <CopyButton 
                             onClick={e => copyTextToClipboard(token.example)}/>
