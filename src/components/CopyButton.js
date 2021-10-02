@@ -1,4 +1,4 @@
-import { IconButton } from '@material-ui/core';
+import IconButton from '@mui/material/IconButton';
 
 export default function CopyButton(props){
     return (

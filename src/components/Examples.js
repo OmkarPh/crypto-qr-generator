@@ -2,10 +2,8 @@ import React from 'react'
 import CopyButton from './CopyButton';
 
 function copyTextToClipboard(text){
-    if(!text)   
+    if(!text || typeof text !== 'string')   
         return;
-    if(typeof text !== 'string')    
-    	return;
     window && window.navigator.clipboard.writeText(text);
 }
 
@@ -24,7 +22,7 @@ const Examples = ({tokens}) => {
                         &nbsp;
                         { token.example }
                         <CopyButton 
-                            onClick={e => copyTextToClipboard(token.example)}/>
+                            onClick={e => copyTextToClipboard(token.example)} />
                     </div>
                 ))
             }
