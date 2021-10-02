@@ -5,19 +5,10 @@ import {
     Select, InputLabel, TextField
 } from '@mui/material';
 
-import CopyButton from './CopyButton';
 import { QRCode } from 'react-qrcode-logo';
 
 import { tokens, defaultToken } from '../data/tokens'
-import CasperLogo from '../images/casperLogoCircle.png';
-
-function copyTextToClipboard(text){
-    if(!text)   
-        return;
-    if(typeof text !== 'string')    
-    	return;
-    window && window.navigator.clipboard.writeText(text);
-}
+import Examples from './Examples'
 
 const Home = () => {
   
@@ -33,17 +24,13 @@ const Home = () => {
     const [qrString, setQRString] = useState('Invalid QR string');
 
     useEffect(()=>{
-        if(!token || !token.id || !address || address==="" || !token.validator.test(address)){
-            setQRString("Invalid QR string");
-            return;
-        }
+        if(!token || !token.id || !address || address==="" || !token.validator.test(address))
+            return setQRString("Invalid QR string");
 
         let newString = token.id + ":" + address;
 
-        if(address.includes(":")){
-            console.log("Addr includes :", address);
+        if(address.includes(":"))
             newString = address;
-        }
 
         if(amount){
             newString += "?amount=" + amount;
@@ -63,6 +50,7 @@ const Home = () => {
             <h4>
                 Crypto transaction QR code generator
             </h4>
+
             <Grid container spacing={2}>
                 <Grid item md={8}>
                     <Box
@@ -72,18 +60,17 @@ const Home = () => {
                         }}
                     >
                         <FormControl sx={{ minWidth: 120 }}>
-                            <InputLabel id="demo-simple-select-label">
+                            <InputLabel>
                                 Token
                             </InputLabel>
                             <Select
-                                labelId="token-label"
                                 value={token}
                                 label="Token"
                                 onChange={changeToken}
                             >
                                 {
                                     tokens.map(token => (
-                                        <MenuItem value={token} >
+                                        <MenuItem value={token}>
                                             { token.name }
                                         </MenuItem>
                                     ))
@@ -94,12 +81,12 @@ const Home = () => {
                             required
                             style={{width:"370px"}}
                             error={!token.validator.test(address)}
-                            label="Recipient address"                                
+                            label="Recipient address"
                             value={address}
                             onChange={e => setAddress(e.target.value)}
                         /><br/>
                         <TextField
-                            label="Amount"                                
+                            label="Amount"
                             value={amount}
                             type="number"
                             onChange={e => setAmount(Number(e.target.value))}
@@ -115,31 +102,15 @@ const Home = () => {
                     <QRCode 
                         size={220}
                         logoWidth={60}
-                        logoImage={CasperLogo}
+                        logoImage={token.icon}
                         value={qrString} />
-                    <p>
+                    <div style={{maxWidth: "250px", overflowWrap: "break-word"}}>
                         QR code string: { qrString }
-                    </p>
+                    </div>
                 </Grid>
             </Grid>
             
-            <h2>
-                Example addresses:
-            </h2>
-            {
-                tokens.map(token => (
-                    <div className="m-0">
-                        <b>
-                            { token.name }: 
-                        </b>
-                        &nbsp;
-                        { token.example }
-                        <CopyButton 
-                            onClick={e => copyTextToClipboard(token.example)}/>
-                    </div>
-                ))
-            }
-
+            <Examples tokens={tokens} />
         </Container>
     )
 }
