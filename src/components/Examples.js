@@ -4,9 +4,9 @@ import CopyButton from './CopyButton';
 
 
 function copyTextToClipboard(text){
-    if(!text || typeof text !== 'string')   
+    if(!text || typeof text !== 'string')
         return;
-    window && window.navigator.clipboard.writeText(text);
+    window && window.navigator.clipboard && window.navigator.clipboard.writeText(text);
 }
 
 const ExampleAddressSpan = styled.span`
@@ -15,9 +15,9 @@ const ExampleAddressSpan = styled.span`
     }
 `;
 
-const Examples = ({tokens}) => {
+const Examples = ({tokens, sm}) => {
     return (
-        <>
+        <div style={{paddingLeft: "5px"}}>
             <h3>
                 Example addresses:
             </h3>
@@ -27,6 +27,7 @@ const Examples = ({tokens}) => {
                         <b>
                             { token.name }: 
                         </b>
+                        { sm && <br/> }
                         &nbsp;
                         <ExampleAddressSpan>
                             { token.example }
@@ -36,7 +37,7 @@ const Examples = ({tokens}) => {
                     </div>
                 ))
             }
-        </>
+        </div>
     )
 }
 

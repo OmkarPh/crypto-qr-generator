@@ -5,21 +5,33 @@ import {
     FormControl, MenuItem, Fab,
     Select, InputLabel, TextField
 } from '@mui/material';
+import { BrowserView, MobileView } from 'react-device-detect';
+import GithubCorner from 'react-github-corner';
 
 import { QRCode } from 'react-qrcode-logo';
 import { downloadCanvas } from 'download-canvas';
 
 import { tokens, defaultToken } from '../data/tokens'
 import Examples from './Examples'
+
 import DownloadIcon from '../images/download.png';
 
 const QRblockGrid = styled(Grid)`
     border: 7px solid green;
     border-radius: 15px;
-    @media (min-width: 768px) {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @media (min-width: 769px) {
+        margin-bottom: 40px!important;
+        
+    }
+    @media (max-width: 768px) {
+        margin-left: 5px!important;
+        min-width: 95%;
+        /* margin-bottom: 40px!important; */
+
     }
 `;
 const QRstring = styled.div`
@@ -27,6 +39,14 @@ const QRstring = styled.div`
     overflow-wrap: anywhere;
     text-align: left;
     margin-top: 15px;
+`;
+const MainContainer = styled(Container)`
+    margin-top: 25px;
+    background-color: #ffffff;
+    @media (min-width: 768px){
+        padding-top: 5px;
+        box-shadow: #535857 0px 9px 15px 6px;
+    }
 `;
 
 const Home = () => {
@@ -76,12 +96,23 @@ const Home = () => {
     }
 
     return (
-        <Container>
+        <MainContainer>
             <h2>
-                Crypto transaction QR code generator
+                <center>
+                        Crypto transaction QR code generator
+                </center>
             </h2>
-
+            <br/>
             <Grid container spacing={2}>
+                <GithubCorner
+                    href={"https://github.com/OmkarPh/crypto-qr-generator"}
+                    bannerColor="#151513"
+                    octoColor="#fff"
+                    size={80}
+                    ariaLabel="Source code"
+                    direction="left"
+                    target="_blank"
+                />
                 <Grid item md={8}>
                     <Box
                         component="form"
@@ -106,7 +137,14 @@ const Home = () => {
                                     ))
                                 }
                             </Select>
-                        </FormControl><br/><br/>
+                        </FormControl>
+                        <TextField
+                            label="Amount"
+                            value={amount}
+                            type="number"
+                            onChange={e => setAmount(Number(e.target.value))}
+                            style={{marginLeft: "15px"}}
+                        /><br/>
                         <TextField
                             required
                             style={{width:"370px"}}
@@ -116,17 +154,13 @@ const Home = () => {
                             onChange={e => setAddress(e.target.value)}
                         /><br/>
                         <TextField
-                            label="Amount"
-                            value={amount}
-                            type="number"
-                            onChange={e => setAmount(Number(e.target.value))}
-                        /><br/>
-                        <TextField
                             label="Message"                                
                             value={message}
                             onChange={e => setMessage(e.target.value)}
                         /><br/>
-                        <Examples tokens={tokens} />
+                        <BrowserView>
+                            <Examples tokens={tokens} />
+                        </BrowserView>
                     </Box>
                 </Grid>
                 <QRblockGrid item md={4}>
@@ -147,8 +181,11 @@ const Home = () => {
                         </Fab>
                     </center>
                 </QRblockGrid>
+                <MobileView>
+                    <Examples tokens={tokens} sm/>
+                </MobileView>
             </Grid>
-        </Container>
+        </MainContainer>
     )
 }
 
